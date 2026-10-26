@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteLLMEndpoint", "LiteLLMEndpoint\LiteLLMEndpoint.csproj", "{763A6C49-ED04-40DA-8A27-1655255BC5D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalGatewayEndpoint", "LocalGatewayEndpoint\LocalGatewayEndpoint.csproj", "{763A6C49-ED04-40DA-8A27-1655255BC5D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

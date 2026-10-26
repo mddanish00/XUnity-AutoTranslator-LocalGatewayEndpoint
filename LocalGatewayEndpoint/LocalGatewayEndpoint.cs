@@ -33,12 +33,12 @@ using XUnity.AutoTranslator.Plugin.Core.Utilities;
 using XUnity.AutoTranslator.Plugin.Core.Web;
 using XUnity.Common.Logging;
 
-namespace LiteLLM
+namespace LocalGateway
 {
-    public class LiteLLMEndpoint : HttpEndpoint, ITranslateEndpoint, IDisposable
+    public class LocalGatewayEndpoint : HttpEndpoint, ITranslateEndpoint, IDisposable
     {
-        public override string Id => "LiteLLM";
-        public override string FriendlyName => "LiteLLM";
+        public override string Id => "LocalGateway";
+        public override string FriendlyName => "LocalGateway";
         public override int MaxTranslationsPerRequest => 1;
         public override int MaxConcurrency => 15;
 
@@ -49,8 +49,7 @@ namespace LiteLLM
 
         private string ServerPort { get; set; }
         private string BinaryPath { get; set; }
-        private string[] ExtraArguments { get; set; }
-        private string ConfigPath { get; set; }
+        private string[] BinaryArguments { get; set; }
         private string ApiKey { get; set; }
         private string ModelName { get; set; }
         private string[] ModelParams { get; set; }
@@ -60,33 +59,32 @@ namespace LiteLLM
         public override void Initialize(IInitializationContext context)
         {
             // Config
-            ServerPort = context.GetOrCreateSetting("LiteLLM", "ServerPort", "4000");
-            BinaryPath = context.GetOrCreateSetting("LiteLLM", "BinaryPath", "");
-            ExtraArguments = Factory.GetIniArray(context.GetOrCreateSetting("LiteLLM", "ExtraArguments", ""));
-            ConfigPath = context.GetOrCreateSetting("LiteLLM", "ConfigPath", "");
-            ApiKey = context.GetOrCreateSetting("LiteLLM", "ApiKey", "");
-            ModelName = context.GetOrCreateSetting("LiteLLM", "ModelName", "");
-            ModelParams = Factory.GetIniArray(context.GetOrCreateSetting("LiteLLM", "ModelParams", "temperature=0.2;top_p=0.9;frequency_penalty=0;presence_penalty=0"));
-            UseExternalServer = context.GetOrCreateSetting("LiteLLM", "UseExternalServer", false);
-            LogServerMessages = context.GetOrCreateSetting("LiteLLM", "LogServerMessages", false);
+            ServerPort = context.GetOrCreateSetting("LocalGateway", "ServerPort", "4000");
+            BinaryPath = context.GetOrCreateSetting("LocalGateway", "BinaryPath", "");
+            BinaryArguments = Factory.GetIniArray(context.GetOrCreateSetting("LocalGateway", "BinaryArguments", ""));
+            ApiKey = context.GetOrCreateSetting("LocalGateway", "ApiKey", "");
+            ModelName = context.GetOrCreateSetting("LocalGateway", "ModelName", "");
+            ModelParams = Factory.GetIniArray(context.GetOrCreateSetting("LocalGateway", "ModelParams", "temperature=0.2;top_p=0.9;frequency_penalty=0;presence_penalty=0"));
+            UseExternalServer = context.GetOrCreateSetting("LocalGateway", "UseExternalServer", false);
+            LogServerMessages = context.GetOrCreateSetting("LocalGateway", "LogServerMessages", false);
 
             // Remove artificial delays
             context.SetTranslationDelay(0.1f);
             context.DisableSpamChecks();
 
-            if ((string.IsNullOrEmpty(BinaryPath) || string.IsNullOrEmpty(ConfigPath)) && !UseExternalServer)
+            if ((string.IsNullOrEmpty(BinaryPath)) && !UseExternalServer)
             {
-                throw new Exception($"LiteLLMEndpoint: BinaryPath or ConfigPath is not set. Please configure them in the settings.");
+                throw new Exception($"LocalGatewayEndpoint: BinaryPath is not set. Please configure them in the settings.");
             }
 
             if (string.IsNullOrEmpty(ApiKey))
             {
-                throw new Exception($"LiteLLMEndpoint: ApiKey is not set. Please configure your Master Key or Virtual Key in the settings.");
+                throw new Exception($"LocalGatewayEndpoint: ApiKey is not set. Please configure your Master Key or Virtual Key in the settings.");
             }
 
             if (string.IsNullOrEmpty(ModelName))
             {
-                throw new Exception($"LiteLLMEndpoint: ModelName is not set. Please configure your model name in the settings.");
+                throw new Exception($"LocalGatewayEndpoint: ModelName is not set. Please configure your model name in the settings.");
             }
 
             var configuredEndpoint = context.GetOrCreateSetting<string>("Service", "Endpoint");
@@ -97,7 +95,7 @@ namespace LiteLLM
             }
 
             // Load configuration
-            var configFolderPath = $"{Configuration.CalculateConfigFolder(context.TranslatorDirectory)}/LiteLLM";
+            var configFolderPath = $"{Configuration.CalculateConfigFolder(context.TranslatorDirectory)}/LocalGateway";
             Configuration.LoadConfiguration(configFolderPath);
             Configuration.LoadModelConfig(ModelName, ModelParams);
         }
@@ -143,24 +141,18 @@ namespace LiteLLM
         {
             if (process == null || process.HasExited)
             {
-                XuaLogger.AutoTranslator.Info($"Running LiteLLM:\n\tBinaryPath: {BinaryPath}");
+                XuaLogger.AutoTranslator.Info($"Running LocalGateway:\n\tBinaryPath: {BinaryPath}");
 
-                string[] argumentsList = new string[]
-                {
-                    "--port",
-                    ServerPort,
-                    "--config",
-                    ConfigPath
-                };
+                string[] argumentsList = new string[]{};
 
-                // Flatten the ExtraArguments array and split by '=' to handle key-value pairs
-                var processExtraArguments = ExtraArguments.SelectMany(arg =>
+                // Flatten the BinaryArguments array and split by '=' to handle key-value pairs
+                var processBinaryArguments = BinaryArguments.SelectMany(arg =>
                 {
                     var splitArr = arg.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
                     splitArr[0] = $"--{splitArr[0]}"; // Prefix with '--'
                     return splitArr;
                 }).ToArray();
-                argumentsList = argumentsList.Concat(processExtraArguments).ToArray();
+                argumentsList = argumentsList.Concat(processBinaryArguments).ToArray();
 
                 process = new Process
                 {
@@ -204,7 +196,8 @@ namespace LiteLLM
                 XuaLogger.AutoTranslator.Info(args.Data);
             }
 
-            if (!isReady && args.Data.Contains("INFO"))
+            // Check for readiness based on specific log messages (1: LiteLLM, 2: agentgateway)
+            if (!isReady && (args.Data.Contains("INFO") || args.Data.Contains("listener established")))
             {
                 isReady = true;
                 XuaLogger.AutoTranslator.Info("Application startup complete.");

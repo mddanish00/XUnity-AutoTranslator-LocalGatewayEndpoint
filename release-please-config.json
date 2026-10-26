@@ -10,7 +10,7 @@
       "extra-files": [
         {
           "type": "xml",
-          "path": "LiteLLMEndpoint/LiteLLMEndpoint.csproj",
+          "path": "LocalGatewayEndpoint/LocalGatewayEndpoint.csproj",
           "xpath": "/*/PropertyGroup/Version"
         }
       ]

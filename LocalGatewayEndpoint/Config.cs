@@ -28,7 +28,7 @@ using System.Reflection;
 using System.Text;
 using SimpleJSON;
 
-namespace LiteLLM
+namespace LocalGateway
 {
     public class AIConfig
     {

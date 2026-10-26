@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net35</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <RootNamespace>LiteLLM</RootNamespace>
-    <AssemblyName>LiteLLM</AssemblyName>
+    <RootNamespace>LocalGateway</RootNamespace>
+    <AssemblyName>LocalGateway</AssemblyName>
 	  <Version>0.0.0</Version>
     <Authors>mddanish00</Authors>
     <Copyright>Copyright (c) 2026 mddanish00</Copyright>

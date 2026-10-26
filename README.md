@@ -1,12 +1,12 @@
-# XUnity-AutoTranslator-LiteLLMEndpoint
+# XUnity-AutoTranslator-LocalGatewayEndpoint
 
-LLM-backed (by [LiteLLM](https://github.com/BerriAI/litellm)) translator endpoint for [XUnity.Auto.Translator](https://github.com/bbepis/XUnity.AutoTranslator).
+LLM-backed (by Local AI Gateway) translator endpoint for [XUnity.Auto.Translator](https://github.com/bbepis/XUnity.AutoTranslator).
 
 Mainly tested on [PriconneRe-TL](https://github.com/ImaterialC/PriconneRe-TL).
 
 ## Requirements
 - XUnity-AutoTranslator v5.0.0 or higher.
-- LiteLLM installed using uv or pipx.
+- Your preferred local AI gateway (agentgateway or LiteLLM)
 
 ## Installation
 
@@ -14,16 +14,16 @@ Mainly tested on [PriconneRe-TL](https://github.com/ImaterialC/PriconneRe-TL).
 
 2. Download pre-compiled dll from Releases and install into `XUnity.AutoTranslator\Translators` folder. (The folder location may different based on loader you are using to use for XUAT)
 
-3. Copy the `SampleConfig/LiteLLM` folder to your loader config folder. For example, for BepInEx, in `BepInEx/config`.
+3. Copy the `SampleConfig/LocalGateway` folder to your loader config folder. For example, for BepInEx, in `BepInEx/config`.
 
 > DLL Release is compiled with the pinned version of XUnity-AutoTranslator. (Usually, whatever is the latest version at the time of commit.)
 
 4. Run your game once to generate/update the XUAT configuration file. Once the game has run and initialized properly, exit the game.
 
-5. Backup your XUAT configuration file (`AutoTranslatorConfig.ini`). After you have a backup copy, edit the configuration and change the `Endpoint` setting to `LiteLLM`.  Your `[Service]` section should look like this:
+5. Backup your XUAT configuration file (`AutoTranslatorConfig.ini`). After you have a backup copy, edit the configuration and change the `Endpoint` setting to `LocalGateway`.  Your `[Service]` section should look like this:
 ```
 [Service]
-Endpoint=LiteLLM
+Endpoint=LocalGateway
 FallbackEndpoint=
 ```
 
@@ -32,11 +32,10 @@ FallbackEndpoint=
 Example config in `AutoTranslatorConfig.ini`.
 
 ```
-[LiteLLM]
+[LocalGateway]
 ServerPort=4000
 BinaryPath=C:\Users\User\.local\bin\litellm.exe
-ExtraArguments=
-ConfigPath=C:\Users\User\Desktop\litellm-config.yaml
+BinaryArguments=
 ApiKey=sk-67696769
 ModelName=gpt-oss-20b
 ModelParams=temperature=0.2;top_p=0.9;frequency_penalty=0;presence_penalty=0
@@ -45,19 +44,19 @@ LogServerMessages=False
 ```
 
 - ServerPort: Port used to launch and communicate with the server.
-- BinaryPath: Path to `litellm` binary.
-- ExtraArguments: Extra arguments to be passed to `litellm` binary when launching the server.
-- ConfigPath: Path to a LiteLLM config.
-- ApiKey: Api Key to access the server. Either LiteLLM Master Key or any of user-created Virtual Keys.
+- BinaryPath: Path to your preferred local gateway binary.
+- BinaryArguments: Arguments to be passed to the binary when launching the server.
+- ApiKey: Api Key to access the server.
 - ModelName: Model to use for translation.
 - ModelParams: Model customization for this translation task.
-- UseExternalServer: Use external LiteLLM Proxy server instead.
-- LogServerMessages: Log LiteLLM server message in XUAT console.
+- UseExternalServer: Use external local gateway Proxy server instead.
+- LogServerMessages: Log Local Gateway server message in XUAT console.
 
 ## Building
 
 For developers, it is recommended to use your project XUnity-AutoTranslator DLL to build this project as long it meet the requirements for maximum compatibility.
 
+- Use latest Windows (optional for maximum compatibility)
 - Make sure latest .NET SDK is installed.
 - XUnity-AutoTranslator v5.0.0 or higher. 
 - Download XUnity.AutoTranslator-Developer-X.X.X.zip. 
@@ -72,7 +71,7 @@ For developers, it is recommended to use your project XUnity-AutoTranslator DLL 
 ```
 dotnet build -c Release -v n -f net35
 ```
-3. Copy the builded DLL, `LiteLLMEndpoint\bin\Release\net35\LiteLLM.dll` to your project `XUnity.AutoTranslator\Translators` folder.
+3. Copy the builded DLL, `LocalGatewayEndpoint\bin\Release\net35\LocalGateway.dll` to your project `XUnity.AutoTranslator\Translators` folder.
 
 ### IL2CPP Version
 
@@ -82,7 +81,7 @@ dotnet build -c Release -v n -f net35
 ```
 dotnet build -c Release -v n -f net6.0
 ```
-3. Copy the builded DLL, `LiteLLMEndpoint\bin\Release\net6.0\LiteLLM.dll` to your project `XUnity.AutoTranslator\Translators` folder.
+3. Copy the builded DLL, `LocalGatewayEndpoint\bin\Release\net6.0\LocalGateway.dll` to your project `XUnity.AutoTranslator\Translators` folder.
 
 ## License
 

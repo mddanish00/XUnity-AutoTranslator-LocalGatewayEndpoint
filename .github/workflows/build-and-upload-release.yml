@@ -65,11 +65,11 @@ jobs:
           import zipfile
           from pathlib import Path
 
-          f35 = zipfile.ZipFile('LiteLLMEndpoint-${{ inputs.repo_tag }}.zip', 'w', zipfile.ZIP_DEFLATED)
-          f60 = zipfile.ZipFile('LiteLLMEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip', 'w', zipfile.ZIP_DEFLATED)
+          f35 = zipfile.ZipFile('LocalGatewayEndpoint-${{ inputs.repo_tag }}.zip', 'w', zipfile.ZIP_DEFLATED)
+          f60 = zipfile.ZipFile('LocalGatewayEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip', 'w', zipfile.ZIP_DEFLATED)
 
-          f35.write('LiteLLMEndpoint/bin/Release/net35/LiteLLM.dll', arcname='LiteLLM.dll')
-          f60.write('LiteLLMEndpoint/bin/Release/net6.0/LiteLLM.dll', arcname='LiteLLM.dll')
+          f35.write('LocalGatewayEndpoint/bin/Release/net35/LocalGateway.dll', arcname='LocalGateway.dll')
+          f60.write('LocalGatewayEndpoint/bin/Release/net6.0/LocalGateway.dll', arcname='LocalGateway.dll')
 
           # Add SampleConfig directory to both zip files
           [f35.write(p, arcname=p.relative_to('SampleConfig')._str if False else p.relative_to(Path('SampleConfig').parent)) for p in Path('SampleConfig').rglob('*') if p.is_file()]
@@ -83,8 +83,8 @@ jobs:
         with:
           name: release-artifacts
           path: |
-            LiteLLMEndpoint-${{ inputs.repo_tag }}.zip
-            LiteLLMEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip
+            LocalGatewayEndpoint-${{ inputs.repo_tag }}.zip
+            LocalGatewayEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip
           retention-days: 1
 
   upload-release:
@@ -133,4 +133,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release upload ${{ inputs.repo_tag }} LiteLLMEndpoint-${{ inputs.repo_tag }}.zip LiteLLMEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip --clobber --repo mddanish00/XUnity-AutoTranslator-LiteLLMEndpoint
+          gh release upload ${{ inputs.repo_tag }} LocalGatewayEndpoint-${{ inputs.repo_tag }}.zip LocalGatewayEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip --clobber --repo mddanish00/XUnity-AutoTranslator-LocalGatewayEndpoint

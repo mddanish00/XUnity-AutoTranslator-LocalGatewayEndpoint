@@ -27,7 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using SimpleJSON;
 
-namespace LiteLLM
+namespace LocalGateway
 {
     public static class Factory
     {
