@@ -130,11 +130,18 @@ namespace LocalGateway
             var data = context.Response.Data;
 
             var jsonResponse = JSON.Parse(data);
-            var result = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString() ?? string.Empty;
-            result = Factory.ValidateAndCleanupTranslation(context.UntranslatedText, result);
-
-            if (MaxTranslationsPerRequest == 1)
+            var finishReason = jsonResponse["choices"]?[0]?["finish_reason"]?.ToString() ?? string.Empty;
+            if (finishReason == "stop")
+            {
+                var result = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString() ?? string.Empty;
+                result = Factory.ValidateAndCleanupTranslation(context.UntranslatedText, result);
                 context.Complete(result);
+            }
+            else
+            {
+                XuaLogger.AutoTranslator.Warn($"LocalGatewayEndpoint: Translation failed. Finish reason: {finishReason}");
+                context.Fail($"LocalGatewayEndpoint: Translation failed. Finish reason: {finishReason}");
+            }
         }
 
         private void StartProcess()
@@ -143,7 +150,7 @@ namespace LocalGateway
             {
                 XuaLogger.AutoTranslator.Info($"Running LocalGateway:\n\tBinaryPath: {BinaryPath}");
 
-                string[] argumentsList = new string[]{};
+                string[] argumentsList = new string[] { };
 
                 // Flatten the BinaryArguments array and split by '=' to handle key-value pairs
                 var processBinaryArguments = BinaryArguments.SelectMany(arg =>
