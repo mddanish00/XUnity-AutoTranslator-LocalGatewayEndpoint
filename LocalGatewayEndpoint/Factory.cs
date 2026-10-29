@@ -34,7 +34,10 @@ namespace LocalGateway
         public static string GetRequestData(string raw)
         {
             var systemPrompt = new StringBuilder(Configuration.config.SystemPrompt);
-            systemPrompt.AppendLine(ConstructGlossaryPrompt(raw));
+            if (Configuration.config.GlossaryLines.Count > 0)
+            {
+                systemPrompt.AppendLine(ConstructGlossaryPrompt(raw));
+            }
 
             // Create messages using SimpleJSON (since some games don't have access to Newtonsoft)
             var messages = new JSONArray();
