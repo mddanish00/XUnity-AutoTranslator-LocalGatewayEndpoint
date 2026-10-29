@@ -26,6 +26,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using SimpleJSON;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 using XUnity.AutoTranslator.Plugin.Core.Endpoints.Http;
@@ -131,7 +132,9 @@ namespace LocalGateway
 
             var jsonResponse = JSON.Parse(data);
             var finishReason = jsonResponse["choices"]?[0]?["finish_reason"]?.ToString() ?? string.Empty;
-            if (finishReason == "stop")
+            // Kind of pain to create new cleanup function here, so just adapt the translation one.
+            finishReason = Factory.ValidateAndCleanupTranslation(finishReason, finishReason);
+            if (finishReason == "Stop")
             {
                 var result = jsonResponse["choices"]?[0]?["message"]?["content"]?.ToString() ?? string.Empty;
                 result = Factory.ValidateAndCleanupTranslation(context.UntranslatedText, result);
