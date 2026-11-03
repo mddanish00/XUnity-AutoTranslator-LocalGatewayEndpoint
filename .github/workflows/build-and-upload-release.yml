@@ -62,7 +62,7 @@ jobs:
 
       - name: Build the project
         run: |
-          dotnet build -c Release -v n
+          dotnet build -c Release -p:InformationalVersion="${{ inputs.repo_tag }} (XUAT: ${{ inputs.xuat_version }})" -v n
 
       - name: Zip the DLLs
         shell: python
