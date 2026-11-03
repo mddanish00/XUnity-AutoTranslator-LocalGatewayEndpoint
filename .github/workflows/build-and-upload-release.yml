@@ -9,6 +9,11 @@ on:
         description: 'The version of XUAT to use for building the release without v'
         required: true
         type: string
+      build_only:
+        description: 'If true, only build the release without uploading it'
+        required: false
+        type: boolean
+        default: false
 
 name: Build and Upload Release
 
@@ -96,6 +101,7 @@ jobs:
   upload-release:
     runs-on: ubuntu-latest
     needs: build-release
+    if: ${{ inputs.build_only == false }}
     permissions:
       contents: write # To upload release assets and update the release
     steps:

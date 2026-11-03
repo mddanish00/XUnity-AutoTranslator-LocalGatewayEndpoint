@@ -42,11 +42,23 @@ jobs:
 
   build-release:
     needs: [release-please, get-xuat-version]
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.release_created == true }}
     permissions:
       contents: write # Required to pass permissions to the reusable workflow
     uses: ./.github/workflows/build-and-upload-release.yml
     with:
       repo_tag: ${{ needs.release-please.outputs.tag_name }}
       xuat_version: ${{ needs.get-xuat-version.outputs.version }}
+    secrets: inherit
+
+  build-main:
+    needs: [release-please, get-xuat-version]
+    if: ${{ needs.release-please.outputs.release_created == false }}
+    permissions:
+      contents: write # Required to pass permissions to the reusable workflow
+    uses: ./.github/workflows/build-and-upload-release.yml
+    with:
+      repo_tag: ${{ github.sha }}
+      xuat_version: ${{ needs.get-xuat-version.outputs.version }}
+      build_only: true
     secrets: inherit
