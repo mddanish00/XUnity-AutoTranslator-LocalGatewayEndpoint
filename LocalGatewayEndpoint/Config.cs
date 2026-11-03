@@ -27,6 +27,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using SimpleJSON;
+using XUnity.AutoTranslator.Plugin.Core.Endpoints;
 
 namespace LocalGateway
 {
@@ -74,7 +75,7 @@ namespace LocalGateway
         {
             var translatorDirectory = translatorDirectoryInput ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(translatorDirectory))
-                throw new InvalidOperationException("Unable to determine the translator directory.");
+                throw new EndpointInitializationException("Unable to determine the translator directory.");
 
             var directory = new DirectoryInfo(Path.GetFullPath(translatorDirectory));
             DirectoryInfo unityDataDirectory = null;
@@ -104,11 +105,11 @@ namespace LocalGateway
         {
             // Check if the prompt files and glossary file exist
             if (!File.Exists($"{configFolder}/SystemPrompt.txt"))
-                throw new Exception($"Missing System Prompt File: {configFolder}/SystemPrompt.txt");
+                throw new EndpointInitializationException($"Missing System Prompt File: {configFolder}/SystemPrompt.txt");
             if (!File.Exists($"{configFolder}/GlossaryPrompt.txt"))
-                throw new Exception($"Missing Glossary Prompt File: {configFolder}/GlossaryPrompt.txt");
+                throw new EndpointInitializationException($"Missing Glossary Prompt File: {configFolder}/GlossaryPrompt.txt");
             if (!File.Exists($"{configFolder}/Glossary.json"))
-                throw new Exception($"Missing Glossary File: {configFolder}/Glossary.json");
+                throw new EndpointInitializationException($"Missing Glossary File: {configFolder}/Glossary.json");
 
             config.SystemPrompt = File.ReadAllText($"{configFolder}/SystemPrompt.txt", Encoding.UTF8);
             config.GlossaryPrompt = File.ReadAllText($"{configFolder}/GlossaryPrompt.txt", Encoding.UTF8);

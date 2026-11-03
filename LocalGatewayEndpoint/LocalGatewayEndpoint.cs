@@ -73,19 +73,19 @@ namespace LocalGateway
             context.SetTranslationDelay(0.1f);
             context.DisableSpamChecks();
 
-            if ((string.IsNullOrEmpty(BinaryPath)) && !UseExternalServer)
+            if (string.IsNullOrEmpty(BinaryPath) && !UseExternalServer)
             {
-                throw new Exception($"LocalGatewayEndpoint: BinaryPath is not set. Please configure them in the settings.");
+                throw new EndpointInitializationException($"LocalGatewayEndpoint: BinaryPath is not set. Please configure them in the settings.");
             }
 
             if (string.IsNullOrEmpty(ApiKey))
             {
-                throw new Exception($"LocalGatewayEndpoint: ApiKey is not set. Please configure your Master Key or Virtual Key in the settings.");
+                throw new EndpointInitializationException($"LocalGatewayEndpoint: ApiKey is not set. Please configure your Master Key or Virtual Key in the settings.");
             }
 
             if (string.IsNullOrEmpty(ModelName))
             {
-                throw new Exception($"LocalGatewayEndpoint: ModelName is not set. Please configure your model name in the settings.");
+                throw new EndpointInitializationException($"LocalGatewayEndpoint: ModelName is not set. Please configure your model name in the settings.");
             }
 
             var configuredEndpoint = context.GetOrCreateSetting<string>("Service", "Endpoint");
