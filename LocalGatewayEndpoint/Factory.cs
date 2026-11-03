@@ -39,7 +39,7 @@ namespace LocalGateway
                 systemPrompt.AppendLine(ConstructGlossaryPrompt(raw));
             }
 
-            // Create messages using SimpleJSON (since some games don't have access to Newtonsoft)
+            // Create messages using SimpleJSON
             var messages = new JSONArray();
             var systemMessage = new JSONObject();
             systemMessage["role"] = "system";
@@ -97,7 +97,6 @@ namespace LocalGateway
 
         public static string ValidateAndCleanupTranslation(string raw, string result)
         {
-            // Check glossary mistranslation here
             // If we do any other clean up should be done here
             if ((result.StartsWith("\"") && result.EndsWith("\""))
                 || (result.StartsWith("'") && result.EndsWith("'")))

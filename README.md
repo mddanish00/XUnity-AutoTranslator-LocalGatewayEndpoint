@@ -35,7 +35,7 @@ LLM-backed (by Local AI Gateway) translator endpoint for [XUnity.Auto.Translator
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project aimed to add LLM translation from Local AI Gateway for [XUnity.Auto.Translator](https://github.com/bbepis/XUnity.AutoTranslator). I focused on local because some game do not support HTTPS, so by using local instead make this Endpoint more usable. There are also added convienence like auto-launch gateway when you opened the game (when XUAT is loaded).
+This project aimed to add LLM translation from Local AI Gateway for [XUnity.Auto.Translator](https://github.com/bbepis/XUnity.AutoTranslator). I focused on local because some game do not support HTTPS, so by using local instead make this Endpoint more usable. There are also added convenience like auto-launch gateway when you opened the game (when XUAT is loaded).
 
 Of course, you can just use [XUnity.AutoTranslate.LlmTranslators](https://github.com/joshfreitas1984/XUnity.AutoTranslate.LlmTranslators) which this project is based on.
 
@@ -48,19 +48,19 @@ Of course, you can just use [XUnity.AutoTranslate.LlmTranslators](https://github
 
 This project needed XUnity-AutoTranslator v5.0.0 or higher to works. Usually, this already came included with the translation mod for your game. Refer to [XUAT Installation](https://github.com/bbepis/XUnity.AutoTranslator#installation) for installing XUAT manually.
 
-You also need to set up an local AI Gateway.
+You also need to set up a local AI Gateway.
 
-> Only supported local AI Gateway right now are agentgateway and LiteLLM. Author recomendation is agentgateway. Created in Rust and fast program intialization comapred to LiteLLM. (LiteLLM takes 1-2 min on my weak PC)
+> Only supported local AI Gateway right now are agentgateway and LiteLLM. Author recomendation is agentgateway. Created in Rust and fast program initialization compared to LiteLLM. (LiteLLM takes 1–2 minimum on the author's weak PC)
 
 ### Installation
 
-1. Download pre-compiled dll from Releases and install into `XUnity.AutoTranslator\Translators` folder. (The folder location may different based on mod loader you are using to use for XUAT.)
+1. Download precompiled DLL from Releases and install into `XUnity.AutoTranslator\Translators` folder. (The folder location may be different based on mod loader you are using to use for XUAT.)
 
-2. Copy the `SampleConfig/LocalGateway` folder to your loader config folder. For example, for BepInEx, in `BepInEx/config`.
+2. Copy the `SampleConfig/LocalGateway` folder to your loader configuration folder. For example, for BepInEx, in `BepInEx/config`.
 
     > DLL Release is compiled with the pinned version of XUnity-AutoTranslator. (Usually, whatever is the latest version at the time of commit.)
 
-3. Backup your XUAT configuration file (`AutoTranslatorConfig.ini`). After you have a backup copy, edit the configuration and change the `Endpoint` setting to `LocalGateway`.  Your `[Service]` section should look like this:
+3. Back up your XUAT configuration file (`AutoTranslatorConfig.ini`). After you have a backup copy, edit the configuration and change the `Endpoint` setting to `LocalGateway`. Your `[Service]` section should look like this:
 
     ```ini
     [Service]
@@ -79,7 +79,7 @@ You also need to set up an local AI Gateway.
 
 ### Configuration
 
-Example config in `AutoTranslatorConfig.ini`.
+Example configuration in `AutoTranslatorConfig.ini`.
 
 ```ini
 [LocalGateway]
@@ -97,7 +97,7 @@ LogServerMessages=False
 - `BinaryPath`: Path to your preferred local gateway binary.
 - `BinaryArguments`: Arguments to be passed to the binary when launching the server. Do not use short options (`-c`, `-b`).
 
-> Both agentgateway and LiteLLM needs to be explicitly pointed toward config and added to `BinaryArguments`. For agentgateway, `file=C:\Users\User\.config\agentgateway\config.yaml`. For LiteLLM, `config=litellm-config.yaml`.
+> Both agentgateway and LiteLLM needs to be explicitly pointed toward configuration file and added to `BinaryArguments`. For agentgateway, `file=C:\Users\User\.config\agentgateway\config.yaml`. For LiteLLM, `config=litellm-config.yaml`.
 
 - `ApiKey`: API Key to access the server.
 - `ModelName`: Model to use for translation.
@@ -111,7 +111,7 @@ LogServerMessages=False
 
 For developers, it is recommended to use your project XUnity-AutoTranslator DLL to build this project as long it meet the requirements for maximum compatibility.
 
-- Use latest Windows (optional for maximum compatibility)
+- Use latest Windows (optional for maximum compatibility).
 - Make sure latest .NET SDK is installed.
 - XUnity-AutoTranslator v5.0.0 or higher.
 - Download XUnity.AutoTranslator-Developer-X.X.X.zip.
@@ -123,7 +123,7 @@ For developers, it is recommended to use your project XUnity-AutoTranslator DLL 
 1. Unzip XUnity.AutoTranslator-Developer-X.X.X.zip in this repo. Rename `Developer` folder to `libs`.
 2. Run the build command.
 
-    ```cmd
+    ```pwsh
     dotnet build -c Release -v n -f net35
     ```
 
@@ -134,7 +134,7 @@ For developers, it is recommended to use your project XUnity-AutoTranslator DLL 
 1. Unzip XUnity.AutoTranslator-Developer-IL2CPP-X.X.X.zip in this repo. Rename `Developer` folder to `libs-il2cpp`.
 2. Run the build command.
 
-    ```cmd
+    ```pwsh
     dotnet build -c Release -v n -f net6.0
     ```
 
@@ -161,7 +161,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
 
 Some of this project code are based on [XUnity.AutoTranslate.LlmTranslators](https://github.com/joshfreitas1984/XUnity.AutoTranslate.LlmTranslators) project, licensed under [MIT](https://raw.githubusercontent.com/joshfreitas1984/XUnity.AutoTranslate.LlmTranslators/refs/heads/master/LICENSE) and [XUnity-AutoTranslator-StasServerEndpoint](https://github.com/mddanish00/XUnity-AutoTranslator-StasServerEndpoint) project, licensed under [MIT](https://raw.githubusercontent.com/mddanish00/XUnity-AutoTranslator-StasServerEndpoint/refs/heads/main/LICENSE) which is a fork of [XUnity-AutoTranslator-SugoiOfflineTranslatorEndpoint](https://github.com/Vin-meido/XUnity-AutoTranslator-SugoiOfflineTranslatorEndpoint) project.
 

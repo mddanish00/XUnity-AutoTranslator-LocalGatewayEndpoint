@@ -59,7 +59,7 @@ namespace LocalGateway
 
         public override void Initialize(IInitializationContext context)
         {
-            // Config
+            // Configuration
             ServerPort = context.GetOrCreateSetting("LocalGateway", "ServerPort", "4000");
             BinaryPath = context.GetOrCreateSetting("LocalGateway", "BinaryPath", "");
             BinaryArguments = Factory.GetIniArray(context.GetOrCreateSetting("LocalGateway", "BinaryArguments", ""));

@@ -1,0 +1,7 @@
+AutoTranslate
+AutoTranslator
+LiteLLM
+XUAT
+XUnity
+agentgateway
+il2cpp
