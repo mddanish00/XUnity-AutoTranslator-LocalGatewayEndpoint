@@ -75,6 +75,12 @@ jobs:
           [f35.write(p, arcname=p.relative_to('SampleConfig')._str if False else p.relative_to(Path('SampleConfig').parent)) for p in Path('SampleConfig').rglob('*') if p.is_file()]
           [f60.write(p, arcname=p.relative_to('SampleConfig')._str if False else p.relative_to(Path('SampleConfig').parent)) for p in Path('SampleConfig').rglob('*') if p.is_file()]
 
+          # Add README.md and LICENSE to both zip files
+          f35.write('README.md', arcname='README.md')
+          f35.write('LICENSE', arcname='LICENSE')
+          f60.write('README.md', arcname='README.md')
+          f60.write('LICENSE', arcname='LICENSE')
+
           f35.close()
           f60.close()
 
