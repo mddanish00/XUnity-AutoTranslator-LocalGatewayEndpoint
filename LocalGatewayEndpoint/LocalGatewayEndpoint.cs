@@ -199,6 +199,18 @@ namespace LocalGateway
             }
         }
 
+        bool CheckServerLoghReadiness(string logMessage)
+        {
+            var readinessIndicators = new string[]
+            {
+                "INFO:     Application startup complete.", // LiteLLM Default
+                "[INFO] Started worker-1", // LiteLLM --run_granian
+                "info    agent_core::readiness   Task 'agentgateway' complete" // agentgateway
+            };
+
+            return readinessIndicators.Any(indicator => logMessage.Contains(indicator));
+        }
+
         void ServerDataReceivedEventHandler(object sender, DataReceivedEventArgs args)
         {
             if (LogServerMessages)
@@ -206,11 +218,10 @@ namespace LocalGateway
                 XuaLogger.AutoTranslator.Info(args.Data);
             }
 
-            // Check for readiness based on specific log messages (1: LiteLLM, 2: agentgateway)
-            if (!isReady && (args.Data.Contains("INFO") || args.Data.Contains("listener established")))
+            if (!isReady && CheckServerLoghReadiness(args.Data))
             {
                 isReady = true;
-                XuaLogger.AutoTranslator.Info("Application startup complete.");
+                XuaLogger.AutoTranslator.Info("LocalGatewayEndpoint startup complete.");
             }
         }
 
