@@ -96,7 +96,7 @@ jobs:
           path: |
             LocalGatewayEndpoint-${{ inputs.repo_tag }}.zip
             LocalGatewayEndpoint-IL2CPP-${{ inputs.repo_tag }}.zip
-          retention-days: 1
+          retention-days: 3
 
   upload-release:
     runs-on: ubuntu-latest
