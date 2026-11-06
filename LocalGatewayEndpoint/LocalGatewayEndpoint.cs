@@ -203,9 +203,9 @@ namespace LocalGateway
         {
             var readinessIndicators = new string[]
             {
-                "INFO:     Application startup complete.", // LiteLLM Default
-                "[INFO] Started worker-1", // LiteLLM --run_granian
-                "info    agent_core::readiness   Task 'agentgateway' complete" // agentgateway
+                "Application startup complete.", // LiteLLM Default
+                "Started worker-1", // LiteLLM --run_granian
+                "Task 'agentgateway' complete" // agentgateway
             };
 
             return readinessIndicators.Any(indicator => logMessage.Contains(indicator));
