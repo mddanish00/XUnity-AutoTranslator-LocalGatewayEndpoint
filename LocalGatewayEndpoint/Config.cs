@@ -114,9 +114,6 @@ namespace LocalGateway
             config.SystemPrompt = File.ReadAllText($"{configFolder}/SystemPrompt.txt", Encoding.UTF8);
             config.GlossaryPrompt = File.ReadAllText($"{configFolder}/GlossaryPrompt.txt", Encoding.UTF8);
 
-            if (string.IsNullOrEmpty(config.GlossaryPrompt))
-                config.GlossaryPrompt = "### Glossary for Consistent Translations\r\nPrioritise and use the translation when an exact match with the original text is found.\r\n## Terms";
-
             // Load Glossary file from JSON
             var glossaryJson = File.ReadAllText($"{configFolder}/Glossary.json", Encoding.UTF8);
             var glossaryArray = JSON.Parse(glossaryJson).AsArray;
