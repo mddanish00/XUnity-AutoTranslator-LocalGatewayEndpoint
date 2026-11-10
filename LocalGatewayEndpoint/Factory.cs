@@ -29,15 +29,25 @@ using SimpleJSON;
 
 namespace LocalGateway
 {
+    public class FactoryTuple<T1, T2>
+    {
+        public T1 Item1 { get; set; }
+        public T2 Item2 { get; set; }
+
+        public FactoryTuple(T1 item1, T2 item2)
+        {
+            Item1 = item1;
+            Item2 = item2;
+        }
+    }
     public static class Factory
     {
         public static string GetRequestData(string raw)
         {
             var systemPrompt = new StringBuilder(Configuration.config.SystemPrompt);
-            if (Configuration.config.GlossaryLines.Count > 0)
-            {
-                systemPrompt.AppendLine(ConstructGlossaryPrompt(raw));
-            }
+            var appendItem = ConstructGlossaryPrompt(raw);
+            if (appendItem.Item1 > 0)
+                systemPrompt.AppendLine(appendItem.Item2);
 
             // Create messages using SimpleJSON
             var messages = new JSONArray();
@@ -72,27 +82,33 @@ namespace LocalGateway
             return requestBody.ToString();
         }
 
-        public static string ConstructGlossaryPrompt(string raw)
+        public static FactoryTuple<int, string> ConstructGlossaryPrompt(string raw)
         {
             var prompt = new StringBuilder(Configuration.config.GlossaryPrompt);
-            prompt.AppendLine(AppendPromptsFor(raw, Configuration.config.GlossaryLines));
-            return prompt.ToString();
+            var appendItem = AppendPromptsFor(raw, Configuration.config.GlossaryLines);
+            prompt.AppendLine(appendItem.Item2);
+            return new FactoryTuple<int, string>(appendItem.Item1, prompt.ToString());
         }
 
-        private static string AppendPromptsFor(string raw, List<GlossaryLine> glossaryLines)
+        private static FactoryTuple<int, string> AppendPromptsFor(string raw, List<GlossaryLine> glossaryLines)
         {
             var prompt = new StringBuilder();
+            var appendCount = 0;
 
             foreach (var line in glossaryLines)
             {
                 if (raw.Contains(line.Raw))
-                    if (line.Context != string.Empty)
+                {
+                    if (string.IsNullOrEmpty(line.Context) == false)
                         prompt.Append($"- {line.Raw}: {line.Result} (Context: {line.Context})\n");
                     else
                         prompt.Append($"- {line.Raw}: {line.Result}\n");
+
+                    appendCount++;
+                }
             }
 
-            return prompt.ToString();
+            return new FactoryTuple<int, string>(appendCount, prompt.ToString());
         }
 
         public static string ValidateAndCleanupTranslation(string raw, string result)
