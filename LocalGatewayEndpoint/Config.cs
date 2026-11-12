@@ -116,21 +116,29 @@ namespace LocalGateway
 
             // Load Glossary file from JSON
             var glossaryJson = File.ReadAllText($"{configFolder}/Glossary.json", Encoding.UTF8);
-            var glossaryArray = JSON.Parse(glossaryJson).AsArray;
-            config.GlossaryLines = new List<GlossaryLine>();
-            foreach (JSONNode item in glossaryArray)
+            try
             {
-                var glossaryLine = new GlossaryLine
+                var glossaryData = JSON.Parse(glossaryJson);
+                var glossaryArray = glossaryData.AsArray;
+                config.GlossaryLines = new List<GlossaryLine>();
+                foreach (JSONNode item in glossaryArray)
                 {
-                    Raw = item["raw"],
-                    Result = item["result"],
-                    Transliteration = item["transliteration"],
-                    Context = item["context"],
-                    SubstituteBeforeTranslate = item["substituteBeforeTranslate"].AsBool,
-                    CheckForHallucination = item["checkForHallucination"].AsBool,
-                    CheckForMistranslation = item["checkForMistranslation"].AsBool
-                };
-                config.GlossaryLines.Add(glossaryLine);
+                    var glossaryLine = new GlossaryLine
+                    {
+                        Raw = item["raw"],
+                        Result = item["result"],
+                        Transliteration = item["transliteration"],
+                        Context = item["context"],
+                        SubstituteBeforeTranslate = item["substituteBeforeTranslate"].AsBool,
+                        CheckForHallucination = item["checkForHallucination"].AsBool,
+                        CheckForMistranslation = item["checkForMistranslation"].AsBool
+                    };
+                    config.GlossaryLines.Add(glossaryLine);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new EndpointInitializationException($"Failed to parse Glossary.json: {ex.Message}");
             }
         }
 
