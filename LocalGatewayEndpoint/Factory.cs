@@ -97,7 +97,7 @@ namespace LocalGateway
 
             foreach (var line in glossaryLines)
             {
-                if (raw.Contains(line.Raw))
+                if (raw.Trim().Contains(line.Raw))
                 {
                     if (string.IsNullOrEmpty(line.Context) == false)
                         prompt.Append($"- {line.Raw}: {line.Result} (Context: {line.Context})\n");

@@ -107,7 +107,7 @@ namespace LocalGateway
             var rawSubtitutedText = rawText;
             foreach (var glossaryLine in Configuration.config.GlossaryLines)
             {
-                if (glossaryLine.SubstituteBeforeTranslate && rawText.Contains(glossaryLine.Raw))
+                if (glossaryLine.SubstituteBeforeTranslate && rawText.Trim().Contains(glossaryLine.Raw))
                 {
                     rawSubtitutedText = rawSubtitutedText.Replace(glossaryLine.Raw, glossaryLine.Result);
                 }
