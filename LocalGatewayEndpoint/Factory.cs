@@ -125,7 +125,11 @@ namespace LocalGateway
 
             result = Regex.Unescape(result);
 
-            //Make sure first character is upper case
+            // Return empty string if result is null or empty
+            if (string.IsNullOrEmpty(result))
+                return string.Empty;
+
+            // Make sure first character is upper case
             if (Char.IsLower(result[0]) && raw != result)
                 result = Char.ToUpper(result[0]) + result.Substring(1, result.Length - 1);
 
